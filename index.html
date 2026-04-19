@@ -225,7 +225,7 @@ window.addEventListener('DOMContentLoaded', () => {
             .slice(0,19)
             .replace(/[:T]/g, '-');
 
-        const filename = proxies_${date}.txt;
+        const filename = `proxies_${date}.txt`;
 
         downloadFile(filename, text);
 
