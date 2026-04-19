@@ -5,63 +5,117 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proxy CLI Aggregator</title>
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        .screen { display: none; min-height: 100vh; }
+        .active { display: block; }
+
+        .menu {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            gap: 60px;
+            flex-direction: column;
+        }
+
+        .menu button {
+            font-size: 32px;
+            padding: 40px 80px;
+            cursor: pointer;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            z-index: 999;
+        }
+    </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        <h1>АГРЕГАТОР ПРОКСИ</h1>
-        <div class="blinking-cursor"></div>
+<!-- МЕНЮ -->
+<div id="menu" class="screen active">
+    <div class="menu">
+        <button onclick="showPage('page1')">АГРЕГАТОР ПРОКСИ</button>
+        <button onclick="showPage('page2')">ВТОРАЯ СТРАНИЦА</button>
     </div>
+</div>
 
-      <div class="container">
-    <div class="header">
-         <h2>ВНИМАНИЕ!</h2>
-        <p>
-            Все, что представлено на этой странице — результат вайбкодинга. 
-            Что-то может работать некорректно, либо не работать вообще.
-        </p>
-        <p>
-            Если вы нашли проблему на странице — отправляйте мне в Телеграм-бота, буду исправлять :р
-        </p>
-        <a href="https://t.me/your_bot_here" target="_blank" class="tg-btn">Открыть Telegram-бота</a>
-    </div>
-    
-    <div class="input-group">
-        <label>// Введите ссылки на TXT-файлы (каждая с новой строки)</label>
-        <textarea id="urls" placeholder="https://raw.githubusercontent.com/..."></textarea>
-    </div>
+<!-- СТРАНИЦА 1 (твой текущий сайт) -->
+<div id="page1" class="screen">
+    <button class="back-btn" onclick="showPage('menu')">Назад</button>
 
-    <div class="input-group">
-        <label>// Приоритетные теги (через запятую, например: RU,DE,US)</label>
-        <textarea id="filterTags" placeholder="RU,DE,US"></textarea>
-    </div>
-    
-    <div class="controls">
-        <button id="executeBtn">ОТСОРТИРОВАТЬ</button>
-        <button id="copyBtn">СКОПИРОВАТЬ КОНФИГИ</button>
-        <button id="downloadBtn">СКАЧАТЬ TXT</button>
-    </div>
-
-    <div class="terminal">
-        <div class="terminal-header">
-            <div class="terminal-dots">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-            </div>
-            <div class="terminal-title">bash — root@proxy-node:~</div>
+    <div class="container">
+        <div class="header">
+            <h1>АГРЕГАТОР ПРОКСИ</h1>
+            <div class="blinking-cursor"></div>
         </div>
-        <div class="terminal-body" id="output">
-            <span class="terminal-line">
-                <span class="terminal-prefix">$</span> Система готова. Ожидание команды...
-            </span>
+
+        <div class="container">
+            <div class="header">
+                <h2>ВНИМАНИЕ!</h2>
+                <p>
+                    Все, что представлено на этой странице — результат вайбкодинга. 
+                    Что-то может работать некорректно, либо не работать вообще.
+                </p>
+                <p>
+                    Если вы нашли проблему на странице — отправляйте мне в Телеграм-бота, буду исправлять :р
+                </p>
+                <a href="https://t.me/your_bot_here" target="_blank" class="tg-btn">Открыть Telegram-бота</a>
+            </div>
+            
+            <div class="input-group">
+                <label>// Введите ссылки на TXT-файлы (каждая с новой строки)</label>
+                <textarea id="urls" placeholder="https://raw.githubusercontent.com/..."></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>// Приоритетные теги (через запятую, например: RU,DE,US)</label>
+                <textarea id="filterTags" placeholder="RU,DE,US"></textarea>
+            </div>
+            
+            <div class="controls">
+                <button id="executeBtn">ОТСОРТИРОВАТЬ</button>
+                <button id="copyBtn">СКОПИРОВАТЬ КОНФИГИ</button>
+                <button id="downloadBtn">СКАЧАТЬ TXT</button>
+            </div>
+
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-dots">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                    <div class="terminal-title">bash — root@proxy-node:~</div>
+                </div>
+                <div class="terminal-body" id="output">
+                    <span class="terminal-line">
+                        <span class="terminal-prefix">$</span> Система готова. Ожидание команды...
+                    </span>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
+<!-- СТРАНИЦА 2 -->
+<div id="page2" class="screen">
+    <button class="back-btn" onclick="showPage('menu')">Назад</button>
+    <div style="display:flex;justify-content:center;align-items:center;height:100vh;font-size:48px;">
+        Страница в разработке
+    </div>
+</div>
+
 <script>
-(function() {
+function showPage(id) {
+    document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+    (function() {
     const out = document.getElementById('output');
     const urlInput = document.getElementById('urls');
     const tagInput = document.getElementById('filterTags');
@@ -69,8 +123,9 @@
     const copyBtn = document.getElementById('copyBtn');
     const downloadBtn = document.getElementById('downloadBtn');
 
-    let finalSelection = [];
+    if (!executeBtn) return;
 
+    let finalSelection = [];
     const MY_WORKER_URL = 'https://proxy-for-agregator.felame29.workers.dev/?u=';
 
     function log(msg, ok = false) {
@@ -89,7 +144,7 @@
 
         out.innerHTML = '';
         let allFound = [];
-        const links = val.split('\n').filter(l => l.trim());
+        const links = val.split('\\n').filter(l => l.trim());
 
         log('Инициализация...');
 
@@ -102,8 +157,7 @@
                 if (!response.ok) throw new Error('Status: ' + response.status);
 
                 const contents = await response.text();
-                
-                const rawLines = contents.split('\n');
+                const rawLines = contents.split('\\n');
                 const protocols = ['vless://', 'vmess://', 'trojan://', 'ss://'];
 
                 const extracted = rawLines.map(line => {
@@ -148,14 +202,14 @@
 
     function copy() {
         if (!finalSelection.length) { log('Ошибка: Нечего копировать.'); return; }
-        navigator.clipboard.writeText(finalSelection.join('\n'))
+        navigator.clipboard.writeText(finalSelection.join('\\n'))
             .then(() => log('SUCCESS: Ссылки скопированы в буфер.', true));
     }
 
     function download() {
         if (!finalSelection.length) { log('Ошибка: Нечего скачивать.'); return; }
 
-        const blob = new Blob([finalSelection.join('\n')], { type: 'text/plain' });
+        const blob = new Blob([finalSelection.join('\\n')], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
 
