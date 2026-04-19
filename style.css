@@ -7,7 +7,7 @@
     --border-color: #333333;
     --accent: #ffffff;
     --terminal-bg: #050505;
-    --success: #ffffff; /* Можно заменить на #00ff00 (зеленый), если захотите больше "хакерского" стиля */
+    --success: #ffffff;
 }
 
 body {
