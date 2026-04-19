@@ -253,3 +253,31 @@ button:active {
             font-size: 20px;
             color: #aaa;
         }
+
+.menu button {
+    font-family: 'JetBrains Mono', monospace;
+    width: 420px;
+    padding: 28px 32px;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #111, #0a0a0a);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+}
+
+.menu button:hover {
+    border-color: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+}
+
+.menu button:active {
+    transform: translateY(0px);
+}
