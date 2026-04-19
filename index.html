@@ -128,7 +128,7 @@
             log('Parsing source ' + (i + 1) + '...');
 
             try {
-                const api = 'https://api.allorigins.win/get?url=' + encodeURIComponent(urls[i]);
+                const api = 'https://corsproxy.io/?' + encodeURIComponent(links[i].trim());
                 const res = await fetchWithTimeout(api);
 
                 if (!res.ok) throw new Error();
